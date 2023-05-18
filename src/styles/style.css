@@ -1,0 +1,9 @@
+Button.default{
+    background-color: gray;
+}
+Button.correctAnswer{
+    background-color: green;
+}
+Button.wrongAnswer{
+    background-color: red;
+}

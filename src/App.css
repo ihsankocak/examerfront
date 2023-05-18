@@ -39,3 +39,16 @@
 .read-the-docs {
   color: #888;
 }
+
+.App {
+  text-align: center;
+}
+.active {
+  background-color: black;
+  color: white;
+  padding: 1px;
+}
+
+a {
+  text-decoration: none;
+}
