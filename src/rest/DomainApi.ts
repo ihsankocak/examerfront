@@ -17,15 +17,12 @@ export interface QuestionDTO {
   choices?: string[];
 }
 
-export interface AbstractChoosableString {
-  choices?: string[];
-}
-
-export interface BaseSolvableWithChoosableStringString {
+export interface ExamDTO {
   /** @format int64 */
   id?: number;
-  problem?: string;
-  choosable?: AbstractChoosableString;
+  user?: string;
+  audioRecord?: number[];
+  questionDTOList?: QuestionDTO[];
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -267,7 +264,7 @@ export class DomainApi<SecurityDataType extends unknown> extends HttpClient<Secu
      * @request GET:/solvables
      */
     getDefaultSolvables: (params: RequestParams = {}) =>
-      this.request<BaseSolvableWithChoosableStringString[], any>({
+      this.request<QuestionDTO[], any>({
         path: `/solvables`,
         method: "GET",
         ...params,
@@ -277,12 +274,29 @@ export class DomainApi<SecurityDataType extends unknown> extends HttpClient<Secu
      * No description
      *
      * @tags solvable-controller
-     * @name CreateExam
+     * @name CreateQuestions
      * @request POST:/solvables
      */
-    createExam: (data: QuestionDTO[], params: RequestParams = {}) =>
+    createQuestions: (data: QuestionDTO[], params: RequestParams = {}) =>
       this.request<QuestionDTO[], any>({
         path: `/solvables`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+  };
+  exams = {
+    /**
+     * No description
+     *
+     * @tags exam-controller
+     * @name CreateExam
+     * @request POST:/exams
+     */
+    createExam: (data: ExamDTO, params: RequestParams = {}) =>
+      this.request<ExamDTO, any>({
+        path: `/exams`,
         method: "POST",
         body: data,
         type: ContentType.Json,

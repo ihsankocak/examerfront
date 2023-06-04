@@ -1,13 +1,27 @@
 
 import { useEffect, useState } from "react";
-import { DomainApi, HttpClient,HttpResponse,BaseSolvableWithChoosableStringString } from "../rest/DomainApi"
+import { DomainApi, HttpClient,HttpResponse, QuestionDTO } from "../rest/DomainApi"
 import  '../styles/style.css';
+import { audioSetup } from "./common/MicrophoneAccessor";
+
 export const Question=()=>{
-    const [questions,setQuestions]=useState([] as BaseSolvableWithChoosableStringString[]);
+    const [questions,setQuestions]=useState([] as QuestionDTO[]);
     const [domainApi,setDomainApi]=useState(new DomainApi({baseApiParams:{format:"json"}}));
+    const dataWasRead=(data:Blob)=>{
+        
+    }
+
+    const audioProps={
+        dataWasRead:dataWasRead
+    }
+     
+    audioSetup(audioProps);
+    const audioContext = new AudioContext();
+    
+  
     useEffect(()=>{
         //const domainApi=new DomainApi({baseApiParams:{format:"json"}});
-        domainApi.solvables.getDefaultSolvables().then((response:HttpResponse<BaseSolvableWithChoosableStringString[], any>)=>{
+        domainApi.solvables.getDefaultSolvables().then((response:HttpResponse<QuestionDTO[], any>)=>{
          console.log("GELDI:",response);
          
      setQuestions(response.data);
@@ -24,15 +38,13 @@ audio.play();
 })
     }
     return <div>
-
-<img  src="https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg" ></img>
       {  questions.map((question,index)=> {
         console.log(index);
         
         return (<div key={"questiondiv"+index}>
         <p >{question.problem}</p>
       
-        {question.choosable?.choices?.map((choice,choiceindex)=>{return <button key={index + "_"+choiceindex} className="default" 
+        {question.choices?.map((choice:string,choiceindex:number)=>{return <button key={index + "_"+choiceindex} className="default" 
                                                                     id={`btn_${choice}`} 
                                                                     onClick={event=>{onTry2Solve(question.id!,choice,event.currentTarget.id)}}>{choice}</button>})}
         </div>);
