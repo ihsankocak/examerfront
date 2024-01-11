@@ -4,7 +4,9 @@ import {
   RouterProvider,
   useLoaderData,
 } from "react-router-dom";
-import { Question } from "./components/Question";
+
+import Login from "./components/user/Login";
+import Home from "./components/user/Home";
 
 
 
@@ -12,8 +14,14 @@ let router = createBrowserRouter([
   {
     path: "/",
     Component() {
-      return <Question/>
+      return <Login/>
     },
+  },
+  {
+    path: "/home",
+    Component() {
+      return <Home/>
+    }
   },
 ]);
 
